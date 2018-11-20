@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
 //import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,6 +21,19 @@ const styles = theme => ({
     minWidth: 700,
   },
 });
+
+const PETS_QUERY = gql`
+{
+  pets{
+    petName
+    petAge
+    petWeight
+    petSpecies
+    ownerFname
+    ownerLname
+  }
+}
+`
 
 export class PetsTable extends Component {
 	render() {
@@ -51,4 +67,19 @@ export class PetsTable extends Component {
 	}
 }
 
-export default withStyles(styles)(PetsTable)
+export class PetQuery extends Component {
+	render(){
+		const { classes } = this.props
+		return (
+			<Query query={PETS_QUERY}>
+	            {({loading, data}) => {
+	              if(loading) return "Loading..."
+	              const { pets } = data;
+	              return <PetsTable pets={pets} classes = {classes}/>
+	            }}  
+            </Query>
+      	)
+	}
+}
+
+export default withStyles(styles)(PetQuery)
