@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
+
 //import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -24,9 +26,13 @@ export class Header extends Component {
         	Pet App
       	</Typography>
           <ul>
-			<li>Home</li>
-			<li>Add Pet</li>		
-			</ul>
+          	<Link to={`/`}>
+				<li>Home</li>
+          	</Link>
+          	<Link to={`/addpet`}>
+				<li>Add Pet</li>		      		
+          	</Link>
+		  </ul>
         </Toolbar>
       </AppBar>
 			</div>

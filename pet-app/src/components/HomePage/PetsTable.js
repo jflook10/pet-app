@@ -28,6 +28,7 @@ const PETS_QUERY = gql`
     petName
     petAge
     petWeight
+    petBreed
     petSpecies
     ownerFname
     ownerLname
@@ -36,6 +37,24 @@ const PETS_QUERY = gql`
 `
 
 export class PetsTable extends Component {
+	renderTableRows = () => {
+		const { pets } = this.props
+
+		return pets.map((pet, index) => {
+			return(
+			<TableRow key={index}>
+	            <TableCell component="th" scope="row">{pet.petName}</TableCell>
+	            <TableCell numeric> {pet.petAge}</TableCell>
+	            <TableCell>{pet.petSpecies}</TableCell>
+	            <TableCell>{pet.petBreed}</TableCell>
+	            <TableCell numeric>{pet.petWeight}</TableCell>
+	            <TableCell>{pet.ownerFname}</TableCell>
+	            <TableCell>{pet.ownerLname}</TableCell>
+          	</TableRow>
+			)
+		})
+	}
+
 	render() {
 	const { classes } = this.props;
 		return (
@@ -44,22 +63,16 @@ export class PetsTable extends Component {
         <TableHead>
           <TableRow>
             <TableCell>Pet Name</TableCell>
-            <TableCell numeric>Age</TableCell>
+            <TableCell>Age</TableCell>
             <TableCell>Species</TableCell>
-            <TableCell numeric>Weight</TableCell>
+            <TableCell>Breed</TableCell>
+            <TableCell>Weight (lbs)</TableCell>
             <TableCell>Owner First Name</TableCell>
             <TableCell>Owner Last Name</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell component="th" scope="row">Freddy</TableCell>
-            <TableCell numeric> 6</TableCell>
-            <TableCell>Dog</TableCell>
-            <TableCell numeric>12 lbs</TableCell>
-            <TableCell>J</TableCell>
-            <TableCell>Flay</TableCell>
-          </TableRow>
+          {this.renderTableRows()}
         </TableBody>
       </Table>
       </Paper>
