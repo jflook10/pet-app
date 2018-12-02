@@ -36,11 +36,10 @@ const styles = theme => ({
 
 const ADD_PET_MUTATION = gql`mutation createPet(
 	$petName: String!,  
-	$petName: String!,
     $petAge: Int!,
     $petWeight: Int!,
-    $petSpecies: String!,
-    $petBreed: String!,
+    $petSpecies: PetSpeciesEnum!,
+    $petBreed: String,
     $ownerFname: String!,
     $ownerLname: String!) {
   createPet(data:{
@@ -67,8 +66,8 @@ export class CreatePetPage extends Component {
 		species: "",
 		breed: "",
 		weight: "",
-		ownerFN: "",
-		ownerLN: ""
+		ownerFname: "",
+		ownerLname: ""
 	};
 
 	handleChange = name => event => {
@@ -77,9 +76,23 @@ export class CreatePetPage extends Component {
 		});
 	};
 
-	handleSubmit = e => {
-		console.log("GOT button")
+	handleSubmit = (e, createPet) => {
+		console.log(this.props, "GOT here")
 		e.preventDefault()
+		createPet().then(()=> {
+			console.log("got here")
+			this.setState({
+				petName: "",
+				age: "",
+				species: "",
+				breed: "",
+				weight: "",
+				ownerFname: "",
+				ownerLname: ""
+			})
+		}).catch(e => {
+			console.log(e, "ERROR")
+		})
 
 	}
 
@@ -108,23 +121,7 @@ export class CreatePetPage extends Component {
 						className={classes.formContainer}
 						noValidate
 						autoComplete="off"
-						onSubmit={e => {
-							console.log("GOT here")
-							e.preventDefault()
-							createPet().then(()=> {
-								this.setState({
-									petName: "",
-									age: "",
-									species: "",
-									breed: "",
-									weight: "",
-									ownerFN: "",
-									ownerLN: ""
-								})
-							}).catch(e => {
-								console.log(e, "ERROR")
-							})
-						}}
+						onSubmit={(e) => this.handleSubmit(e, createPet)}
 					>
 						<TextField
 							id="petApp-create-petName"
@@ -155,10 +152,10 @@ export class CreatePetPage extends Component {
 				            <MenuItem value="Cat">
 				              Cat
 				            </MenuItem>
-				            <MenuItem value="Lizard">
+				            <MenuItem value="Snake">
 				              Snake
 				            </MenuItem>
-				            <MenuItem value="Hamster">
+				            <MenuItem value="Rabbit">
 				              Rabbit
 				            </MenuItem>
 				            <MenuItem value="Other">
@@ -205,20 +202,20 @@ export class CreatePetPage extends Component {
 							id="petApp-create-ownerFN"
 							label="Owner First Name"
 							className={classes.textField}
-							value={this.state.ownerFN}
-							onChange={this.handleChange("ownerFN")}
+							value={this.state.ownerFname}
+							onChange={this.handleChange("ownerFname")}
 							margin="normal"
 						/>
 						<TextField
 							id="petApp-create-ownerLN"
 							label="Owner Last Name"
 							className={classes.textField}
-							value={this.state.ownerLN}
-							onChange={this.handleChange("ownerLN")}
+							value={this.state.ownerLname}
+							onChange={this.handleChange("ownerLname")}
 							margin="normal"
 						/>
 						<div>
-							<Button variant="contained" color="primary" className={classes.button} onClick={this.handleSubmit}>
+							<Button variant="contained" color="primary" className={classes.button} onClick={(e) => this.handleSubmit(e, createPet)}>
 					        	Submit
 				        	</Button>
 						</div>
