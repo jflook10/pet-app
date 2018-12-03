@@ -34,7 +34,7 @@ const styles = theme => ({
   	},
 });
 
-const ADD_PET_MUTATION = gql`mutation createPet(
+export const ADD_PET_MUTATION = gql`mutation createPet(
 	$petName: String!,  
     $petAge: Int!,
     $petWeight: Int!,
@@ -77,10 +77,9 @@ export class CreatePetPage extends Component {
 	};
 
 	handleSubmit = (e, createPet) => {
-		console.log(this.props, "GOT here")
 		e.preventDefault()
 		createPet().then(()=> {
-			console.log("got here")
+			console.log('Got here')
 			this.setState({
 				petName: "",
 				age: "",
@@ -90,6 +89,8 @@ export class CreatePetPage extends Component {
 				ownerFname: "",
 				ownerLname: ""
 			})
+			console.log('Got AND here')
+
 		}).catch(e => {
 			console.log(e, "ERROR")
 		})
@@ -215,7 +216,7 @@ export class CreatePetPage extends Component {
 							margin="normal"
 						/>
 						<div>
-							<Button variant="contained" color="primary" className={classes.button} onClick={(e) => this.handleSubmit(e, createPet)}>
+							<Button id="petApp-createPet-btn" variant="contained" color="primary" className={classes.button} onClick={(e) => this.handleSubmit(e, createPet)}>
 					        	Submit
 				        	</Button>
 						</div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import './App.css';
@@ -10,9 +11,12 @@ import Header from './components/Header'
 import CreatePetPage from './components/CreatePage/CreatePetPage'
 
 
-const client = new ApolloClient({
+const cache = new InMemoryCache();
+
+export const client = new ApolloClient({
   //endpoint to graphql server
-  uri: 'https://api-uswest.graphcms.com/v1/cjop0gbzb2q3v01ij2sui86vg/master'
+  uri: 'https://api-uswest.graphcms.com/v1/cjop0gbzb2q3v01ij2sui86vg/master',
+  cache
 });
 
 
