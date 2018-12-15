@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure } from 'enzyme';
+import { spy } from 'sinon';
+import wait from 'waait';
 
-import CreatePetPage, {CreatePetPage as CreatePetComponent, ADD_PET_MUTATION } from '../CreatePetPage';
+
+import CreatePetMutation, {CreatePetMutation as CreatePet, ADD_PET_MUTATION } from '../CreatePetMutation';
 
 configure({ adapter: new Adapter() });
 
@@ -32,37 +35,40 @@ const mocks = [
     },
   ];
 
-describe('CreatePetPage', () => {
+
+describe('CreatePetMutation', () => {
 	it('renders without error', () => {
 		const div = document.createElement('div');
 	  	ReactDOM.render(
 	    	<MockedProvider mocks={[]}>
-	  			<CreatePetPage />
+	  			<CreatePetMutation />
 			</MockedProvider>, div
 		)
 	  ReactDOM.unmountComponentAtNode(div);
 	});
 
-	it('submits form successfully', () => {
+	it('submits form successfully', async () => {
+		const div = document.createElement('div');
 	  	const component = mount(
-	    	<MockedProvider mocks={mocks} removeTypename>
-	  			<CreatePetPage />
-			</MockedProvider>)
-
-	    component.setState({petName: 'Dingo',  
-		    age: 2,
-		    weight: 2,
+	    	<MockedProvider mocks={mocks} addTypename>
+	  			<CreatePetMutation />
+			</MockedProvider>, div)
+  		
+	    component.find('CreatePetMutation').setState({petName: 'Dingo',  
+		    age: '2',
+		    weight: '2',
 		    species: 'Dog',
 		    breed: 'Mutt',
 		    ownerFname: 'Steve',
 		    ownerLname: 'Irwin'
 		})
+	    
+  		component.find('button').simulate('click')// fires the mutation
 
-  		const button = component.find('button');
-
-  		button.simulate('click'); // fires the mutation
-
-		expect(component.state('petName')).toBe('')
+  		await wait(10)
+		
+		expect( component.find('CreatePetMutation').state('petName')).toBe('')
+	  ReactDOM.unmountComponentAtNode(div);
 
 	})
 

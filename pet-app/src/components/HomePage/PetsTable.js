@@ -23,7 +23,7 @@ const styles = theme => ({
 });
 
 const PETS_QUERY = gql`
-{
+query getPets {
   pets{
     petName
     petAge
@@ -87,10 +87,13 @@ export class PetQuery extends Component {
 			<Query query={PETS_QUERY}>
 	            {({loading, data}) => {
 	              if(loading) return "Loading..."
-	              const { pets } = data;
-	              return <PetsTable pets={pets} classes = {classes}/>
+	       
+              	const { pets } = data;	
+              	return <PetsTable pets={pets} classes = {classes}/>
 	            }}  
             </Query>
+
+            
       	)
 	}
 }
